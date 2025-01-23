@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.7.3"}
+{"root":["./src/index.ts","./src/lib/supabase.ts","./src/routes/index.ts","./src/routes/upload.ts","./src/services/upload/parsepdftotext.ts","./src/services/upload/uploadtosupabase.ts"],"version":"5.7.3"}
