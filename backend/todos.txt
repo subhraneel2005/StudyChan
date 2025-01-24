@@ -1,0 +1,7 @@
+TODOS-24/01/2025
+
+-Authentication []
+-store data to prisma [ ]
+-chat w/ pdf [ ]
+-store chat history of specific user [ ]
+-delete chat [ ]

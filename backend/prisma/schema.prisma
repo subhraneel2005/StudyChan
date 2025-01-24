@@ -1,181 +1,171 @@
 datasource db {
- provider = "postgresql"
- url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 generator client {
- provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 model User {
- id                String              @id @default(cuid())
- email             String              @unique
- name              String?
- passwordHash      String
- documents         Document[]
- quizzes           Quiz[]
- conversations     ConversationThread[]
- profile           UserProfile?
- subscriptionPlan  SubscriptionPlan    @default(FREE)
- createdAt         DateTime            @default(now())
- updatedAt         DateTime            @updatedAt
-}
-
-model UserProfile {
- id            String    @id @default(cuid())
- user          User      @relation(fields: [userId], references: [id])
- userId        String    @unique
- bio           String?
- interests     String[]
- studyPreferences Json?
+    id               String               @id @default(cuid())
+    email            String               @unique
+    username         String               @unique
+    password         String
+    documents        Document[]        
+    quizzes          Quiz[]          
+    conversations    ConversationThread[]
+    subscriptionPlan SubscriptionPlan     @default(FREE)
+    createdAt        DateTime             @default(now())
+    updatedAt        DateTime             @updatedAt
 }
 
 model Document {
- id              String              @id @default(cuid())
- title           String
- fileName        String
- fileUrl         String
- user            User                @relation(fields: [userId], references: [id])
- userId          String
- parsedText      String?
- embeddings      Boolean             @default(false)
- chunks          DocumentChunk[]
- quizzes         Quiz[]
- conversations   ConversationThread[]
- tags            String[]
- language        String?
- field           String?
- complexity      DocumentComplexity   @default(INTERMEDIATE)
- createdAt       DateTime            @default(now())
- updatedAt       DateTime            @updatedAt
+    id            String               @id @default(cuid())
+    title         String
+    fileName      String
+    fileUrl       String
+    user          User                 @relation(fields: [userId], references: [id])
+    userId        String
+    parsedText    String?
+    embeddings    Boolean              @default(false)
+    chunks        DocumentChunk[]
+    quizzes       Quiz[]
+    conversations ConversationThread[]
+    tags          String[]
+    language      String?
+    field         String?
+    complexity    DocumentComplexity   @default(INTERMEDIATE)
+    createdAt     DateTime             @default(now())
+    updatedAt     DateTime             @updatedAt
 }
 
 model DocumentChunk {
- id            String    @id @default(cuid())
- document      Document  @relation(fields: [documentId], references: [id])
- documentId    String
- content       String
- embedding     Json?
- pineconeId    String?
- index         Int
- keywords      String[]
+    id         String   @id @default(cuid())
+    document   Document @relation(fields: [documentId], references: [id])
+    documentId String
+    content    String
+    embedding  Json?
+    pineconeId String?
+    index      Int
+    keywords   String[]
 }
 
 model Quiz {
- id            String            @id @default(cuid())
- user          User              @relation(fields: [userId], references: [id])
- userId        String
- document      Document          @relation(fields: [documentId], references: [id])
- documentId    String
- title         String
- questions     QuizQuestion[]
- difficulty    QuizDifficulty    @default(MEDIUM)
- type          QuizType          @default(COMPREHENSION)
- createdAt     DateTime          @default(now())
+    id         String         @id @default(cuid())
+    user       User           @relation(fields: [userId], references: [id])
+    userId     String
+    document   Document       @relation(fields: [documentId], references: [id])
+    documentId String
+    title      String
+    questions  QuizQuestion[]
+    difficulty QuizDifficulty @default(MEDIUM)
+    type       QuizType       @default(COMPREHENSION)
+    createdAt  DateTime       @default(now())
 }
 
 model QuizQuestion {
- id                String          @id @default(cuid())
- quiz              Quiz            @relation(fields: [quizId], references: [id])
- quizId            String
- question          String
- explanation       String?
- options           QuizOption[]
- correctOptionId   String
- difficulty        QuestionDifficulty @default(MEDIUM)
+    id              String             @id @default(cuid())
+    quiz            Quiz               @relation(fields: [quizId], references: [id])
+    quizId          String
+    question        String
+    explanation     String?
+    options         QuizOption[]
+    correctOptionId String
+    difficulty      QuestionDifficulty @default(MEDIUM)
 }
 
 model QuizOption {
- id            String          @id @default(cuid())
- question      QuizQuestion    @relation(fields: [questionId], references: [id])
- questionId    String
- text          String
- isCorrect     Boolean
+    id         String       @id @default(cuid())
+    question   QuizQuestion @relation(fields: [questionId], references: [id])
+    questionId String
+    text       String
+    isCorrect  Boolean
 }
 
 model ConversationThread {
- id            String          @id @default(cuid())
- user          User            @relation(fields: [userId], references: [id])
- userId        String
- document      Document        @relation(fields: [documentId], references: [id])
- documentId    String
- title         String?
- messages      ChatMessage[]
- context       Json?
- status        ThreadStatus    @default(ACTIVE)
- createdAt     DateTime        @default(now())
- updatedAt     DateTime        @updatedAt
+    id         String        @id @default(cuid())
+    user       User          @relation(fields: [userId], references: [id])
+    userId     String
+    document   Document      @relation(fields: [documentId], references: [id])
+    documentId String
+    title      String?
+    messages   ChatMessage[]
+    context    Json?
+    status     ThreadStatus  @default(ACTIVE)
+    createdAt  DateTime      @default(now())
+    updatedAt  DateTime      @updatedAt
 }
 
 model ChatMessage {
- id            String          @id @default(cuid())
- thread        ConversationThread @relation(fields: [threadId], references: [id])
- threadId      String
- content       String
- role          MessageRole
- type          MessageType
- metadata      Json?
- tokens        Int?
- sentiment     MessageSentiment?
- createdAt     DateTime        @default(now())
+    id        String             @id @default(cuid())
+    thread    ConversationThread @relation(fields: [threadId], references: [id])
+    threadId  String
+    content   String
+    role      MessageRole
+    type      MessageType
+    metadata  Json?
+    tokens    Int?
+    sentiment MessageSentiment?
+    createdAt DateTime           @default(now())
 }
 
 enum SubscriptionPlan {
- FREE
- BASIC
- PRO
- ENTERPRISE
+    FREE
+    BASIC
+    PRO
+    ENTERPRISE
 }
 
 enum DocumentComplexity {
- BEGINNER
- INTERMEDIATE
- ADVANCED
- EXPERT
+    BEGINNER
+    INTERMEDIATE
+    ADVANCED
+    EXPERT
 }
 
 enum QuizDifficulty {
- EASY
- MEDIUM
- HARD
+    EASY
+    MEDIUM
+    HARD
 }
 
 enum QuizType {
- COMPREHENSION
- DIAGNOSTIC
- PRACTICE
- ASSESSMENT
+    COMPREHENSION
+    DIAGNOSTIC
+    PRACTICE
+    ASSESSMENT
 }
 
 enum QuestionDifficulty {
- EASY
- MEDIUM
- HARD
+    EASY
+    MEDIUM
+    HARD
 }
 
 enum MessageRole {
- USER
- AI
+    USER
+    AI
 }
 
 enum MessageType {
- SHORT_QUESTION
- LONG_QUESTION
- CLARIFICATION
- SUMMARY
- EXPLANATION
- CONCEPT_BREAKDOWN
- APPLICATION
+    SHORT_QUESTION
+    LONG_QUESTION
+    CLARIFICATION
+    SUMMARY
+    EXPLANATION
+    CONCEPT_BREAKDOWN
+    APPLICATION
 }
 
 enum ThreadStatus {
- ACTIVE
- ARCHIVED
- DELETED
+    ACTIVE
+    ARCHIVED
+    DELETED
 }
 
 enum MessageSentiment {
- POSITIVE
- NEUTRAL
- NEGATIVE
+    POSITIVE
+    NEUTRAL
+    NEGATIVE
 }
