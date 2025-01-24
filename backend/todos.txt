@@ -1,7 +1,10 @@
 TODOS-24/01/2025
 
--Authentication []
--store data to prisma [ ]
+-Authentication [✅]
+-store data to prisma
+    -user data [✅]
+    -document data []
+    -chat history data []
 -chat w/ pdf [ ]
 -store chat history of specific user [ ]
 -delete chat [ ]
