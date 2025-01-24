@@ -3,6 +3,7 @@ import multer from 'multer';
 import { uploadFile } from "../services/upload/uploadToSupabase";
 import { extractTextFromPdf } from "../services/upload/parsePdfToText";
 import { langchainSplitText } from "../services/processing/textSplitting";
+import { getGeminiEmbeddings } from "../services/embedding/embeddings";
 
 export const uploadRouter = Router();
 
@@ -24,14 +25,15 @@ uploadRouter.post("/upload", upload.single('file'), async(req:any,res) => {
 
         const uploadedFile = await uploadFile(req.file!);
         const parsedText = await extractTextFromPdf(req.file?.buffer!);
-        const splitedText = await langchainSplitText(parsedText!)
-
+        const splitedText = await langchainSplitText(parsedText!);
+        const embeddings = await getGeminiEmbeddings(splitedText);
         res.status(200).json({
             message: "Upload service working successfully",
             data: {
                 uploadedFile,
                 parsedText,
-                langchainSplitedText: splitedText
+                langchainSplitedText: splitedText,
+                geminiEmbeddings: embeddings
             }
         })
     } catch (error) {

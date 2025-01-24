@@ -7,7 +7,7 @@ export const langchainSplitText = async(text:string) => {
     separators: ['\n\n', '\n', ' ', '']
   });
       
-      const output = await splitter.createDocuments([text]);
+      const output = await splitter.splitText(text);
 
       return output;
 }
