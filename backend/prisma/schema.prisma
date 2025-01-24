@@ -12,8 +12,8 @@ model User {
     email            String               @unique
     username         String               @unique
     password         String
-    documents        Document[]        
-    quizzes          Quiz[]          
+    documents        Document[]
+    quizzes          Quiz[]
     conversations    ConversationThread[]
     subscriptionPlan SubscriptionPlan     @default(FREE)
     createdAt        DateTime             @default(now())
@@ -21,23 +21,27 @@ model User {
 }
 
 model Document {
-    id            String               @id @default(cuid())
-    title         String
-    fileName      String
-    fileUrl       String
-    user          User                 @relation(fields: [userId], references: [id])
-    userId        String
-    parsedText    String?
-    embeddings    Boolean              @default(false)
-    chunks        DocumentChunk[]
-    quizzes       Quiz[]
-    conversations ConversationThread[]
-    tags          String[]
-    language      String?
-    field         String?
-    complexity    DocumentComplexity   @default(INTERMEDIATE)
-    createdAt     DateTime             @default(now())
-    updatedAt     DateTime             @updatedAt
+    id                   String               @id @default(cuid())
+    fileName             String
+    publicUrl            String
+    originalName         String
+    PineconeData         PineconeVectorData?  @relation(fields: [pineconeVectorDataId], references: [id])
+    user                 User                 @relation(fields: [userId], references: [id])
+    userId               String
+    parsedText           String
+    chunks               DocumentChunk[]
+    quizzes              Quiz[]
+    conversations        ConversationThread[]
+    createdAt            DateTime             @default(now())
+    updatedAt            DateTime             @updatedAt
+    pineconeVectorDataId String?              @unique
+}
+
+model PineconeVectorData {
+    id           String    @id @default(cuid())
+    document     Document?
+    documentId   String
+    totalVectors Int
 }
 
 model DocumentChunk {
