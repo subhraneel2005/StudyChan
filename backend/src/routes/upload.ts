@@ -4,6 +4,7 @@ import { uploadFile } from "../services/upload/uploadToSupabase";
 import { extractTextFromPdf } from "../services/upload/parsePdfToText";
 import { langchainSplitText } from "../services/processing/textSplitting";
 import { getGeminiEmbeddings } from "../services/embedding/embeddings";
+import { storePineconeVectors } from "../services/vector-database/pineconeStore";
 
 export const uploadRouter = Router();
 
@@ -26,14 +27,17 @@ uploadRouter.post("/upload", upload.single('file'), async(req:any,res) => {
         const uploadedFile = await uploadFile(req.file!);
         const parsedText = await extractTextFromPdf(req.file?.buffer!);
         const splitedText = await langchainSplitText(parsedText!);
-        const embeddings = await getGeminiEmbeddings(splitedText);
+
+        const storeToPineconeDatabase = await storePineconeVectors(
+            uploadedFile.fileName,
+            splitedText
+        )
+        
         res.status(200).json({
-            message: "Upload service working successfully",
+            message: "Upload + TextSpliting + Embedding + Vector DB service working successfully",
             data: {
                 uploadedFile,
-                parsedText,
-                langchainSplitedText: splitedText,
-                geminiEmbeddings: embeddings
+                storeToPineconeDatabase
             }
         })
     } catch (error) {
