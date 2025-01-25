@@ -1,7 +1,7 @@
 import {Router} from "express";
 import { uploadRouter } from "./upload";
 import { authRouter } from "./auth";
-import { userQueryRouter } from "./userQuery";
+import { userQueryRouter } from "./chat";
 
 export const router = Router();
 
