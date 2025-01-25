@@ -13,9 +13,9 @@ Node.js, Expressjs Typescript, Langchain, Gemini, Pinecone Database, Prisma+Post
 - [x] Document data storing to Prisma
 
 ### 25/01/2025
-- [ ] User query embedding
-- [ ] Semantic search in Pinecone store
-- [ ] Convert janky response into well-structured AI response with Prompts
-- [ ] Chat with PDF
+- [x] User query embedding
+- [x] Semantic search in Pinecone store
+- [x] Convert janky response into well-structured AI response with Prompts
+- [x] Chat with PDF
 - [ ] Store chat history of specific user
 - [ ] Delete chat of specific user
