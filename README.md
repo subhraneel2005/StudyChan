@@ -17,5 +17,7 @@ Node.js, Expressjs Typescript, Langchain, Gemini, Pinecone Database, Prisma+Post
 - [x] Semantic search in Pinecone store
 - [x] Convert janky response into well-structured AI response with Prompts
 - [x] Chat with PDF
-- [ ] Store chat history of specific user
-- [ ] Delete chat of specific user
+- [x] create /chat route -> return chatId
+- [x] create delete chat route /chat/:chatId
+- [x] ask qna -> /ask/:chatId
+- [x] store chat history of specific user
