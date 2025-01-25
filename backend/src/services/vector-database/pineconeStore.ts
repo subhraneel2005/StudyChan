@@ -1,14 +1,8 @@
-import { Pinecone } from "@pinecone-database/pinecone";
+import { pinecone } from "../../lib/pinecone";
 import { getGeminiEmbeddings } from "../embedding/embeddings";
 import { normalizeEmbeddings } from "../embedding/normalizeEmbeddings";
 
-export const storePineconeVectors = async (
-  documentId: string,
-  chunks: string[]
-) => {
-  const pinecone = new Pinecone({
-    apiKey: process.env.PINECONE_API_KEY!,
-  });
+export const storePineconeVectors = async (documentId: string, chunks: string[]) => {
 
   const embeddings = await getGeminiEmbeddings(chunks);
 

@@ -1,10 +1,15 @@
-TODOS-24/01/2025
+TODOS-
 
--Authentication [✅]
--store data to prisma
-    -user data [✅]
-    -document data [✅]
-    -chat history data []
--chat w/ pdf [ ]
+24/01/2025
+-Authentication [ x ] 
+-user data storing to prisma[ x ]
+-document data storing to prisma[ x ]
+   
+
+25/01/2025
+-user query -> embedding [ x ]
+-semantic search in pinecone store[ x ]
+-convert the janky response into a well structered AI response with Prompts [ x ]
+-chat w/ pdf [ x ]
 -store chat history of specific user [ ]
--delete chat [ ]
+-delete chat of specific user[ ]
