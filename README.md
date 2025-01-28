@@ -17,5 +17,14 @@ Node.js, Expressjs Typescript, Langchain, Gemini, Pinecone Database, Prisma+Post
 - [x] Semantic search in Pinecone store
 - [x] Convert janky response into well-structured AI response with Prompts
 - [x] Chat with PDF
-- [ ] Store chat history of specific user
-- [ ] Delete chat of specific user
+- [x] Store chat history of specific user
+- [x] Delete chat of specific user
+
+### 28/01/2025
+- [ ] Figma Designs:
+    - [ ] Landing page 
+    - [ ] SignUp and SignIn page 
+    - [ ] Chat Page 
+- [ ] Landing page NextJS frontend 
+- [ ] SignUp and SignIn page NextJS frontend 
+- [ ] Chat page NextJS frontend 

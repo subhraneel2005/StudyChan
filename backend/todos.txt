@@ -15,3 +15,13 @@ TODOS-
 -create delete chat route /chat/:chatId [ x ]
 - ask qna -> /ask/:chatId [ x ]
 -store chat history of specific user [ x ]
+
+
+28/01/2025
+-Figma Designs:
+    -Landing page []
+    -SignUp and SignIn page []
+    -Chat Page []
+-Landing page NextJS frontend []
+-SignUp and SignIn page NextJS frontend []
+-Chat page NextJS frontend []
