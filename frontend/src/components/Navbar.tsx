@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import { Button } from './ui/button'
 import {
@@ -8,9 +10,13 @@ import {
     MenubarItem,
 } from "@/components/ui/menubar"
 import MoileNav from './MoileNav'
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
-  return (
+  
+    const router = useRouter();
+  
+    return (
     <main>
     <div className='w-full px-6 py-8 hidden lg:flex justify-evenly'>
         <span className='text-lg font-bold'>StudyChan .</span>
@@ -42,7 +48,7 @@ export default function Navbar() {
                 </MenubarContent>
             </MenubarMenu>
         </Menubar>
-        <Button size='sm'>Signin</Button>
+        <Button onClick={() => router.push('/signup')} size='sm'>Signin</Button>
     </div>
     <MoileNav/>
     </main>
