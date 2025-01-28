@@ -7,9 +7,11 @@ import {
     MenubarContent,
     MenubarItem,
 } from "@/components/ui/menubar"
+import MoileNav from './MoileNav'
 
 export default function Navbar() {
   return (
+    <main>
     <div className='w-full px-6 py-8 hidden lg:flex justify-evenly'>
         <span className='text-lg font-bold'>StudyChan .</span>
         <Menubar>
@@ -42,5 +44,7 @@ export default function Navbar() {
         </Menubar>
         <Button size='sm'>Signin</Button>
     </div>
+    <MoileNav/>
+    </main>
   )
 }
