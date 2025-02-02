@@ -8,13 +8,14 @@ import { Input } from "@/components/ui/input"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Label } from "@/components/ui/label"
-import {  LoaderPinwheel } from "lucide-react"
+import {  Eye, EyeOff, LoaderPinwheel } from "lucide-react"
 
 export default function SignUp() {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
+  const [showPass, setShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
 
   const bc = process.env.BACKEND_URL
@@ -45,7 +46,7 @@ export default function SignUp() {
         throw new Error(data.message || "Signup failed")
       }
 
-      router.push("/chat")
+      router.push("/signin")
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -92,14 +93,22 @@ export default function SignUp() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
+              <div className="wfull gap-1 flex justify-center items-center">
               <Input
                 id="password"
-                type="password"
+                type={showPass ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
               />
+                {showPass ? (
+                  <Button size='sm' variant='outline' onClick={() => setShowPass(!showPass)}>Hide</Button>
+                ) : (
+                  <Button size='sm' variant='outline' onClick={() => setShowPass(!showPass)}>Show</Button>
+                )}
+              </div>
+                <span className="sr-only">Toggle password visibility</span>
             </div>
             <Button
               type="submit"

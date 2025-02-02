@@ -5,7 +5,7 @@ const port = 3000;
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://form-ai-rosy.vercel.app'],
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'https://studychan.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true
   }));

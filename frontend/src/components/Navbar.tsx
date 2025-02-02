@@ -48,7 +48,7 @@ export default function Navbar() {
                 </MenubarContent>
             </MenubarMenu>
         </Menubar>
-        <Button onClick={() => router.push('/signup')} size='sm'>Signin</Button>
+        <Button onClick={() => router.push('/signin')} size='sm'>Signin</Button>
     </div>
     <MoileNav/>
     </main>

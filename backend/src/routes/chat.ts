@@ -141,7 +141,56 @@ const deleteChat = async (req: any, res: any) => {
   }
 };
 
+const getChatMessages = async (req: any, res: any) => {
+  try {
+    const chatId = req.params.chatId;
+
+    const chat = await prisma.chat.findUnique({
+      where: {
+        id: chatId,
+      },
+      include: {
+        messages: {
+          orderBy: {
+            createdAt: 'asc'
+          }
+        }
+      }
+    });
+
+    if (!chat) {
+      return res.status(404).json({ message: "Chat not found" });
+    }
+
+    // Get the document information if documentId exists
+    let document = null;
+    if (chat.documentId) {
+      document = await prisma.document.findFirst({
+        where: {
+          fileName: chat.documentId
+        },
+        select: {
+          fileName: true,
+          originalName: true
+        }
+      });
+    }
+
+    return res.status(200).json({
+      chat,
+      document
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error
+    });
+  }
+};
+
 userQueryRouter.delete("/chat/:chatId", authMiddleware, deleteChat);
 
 userQueryRouter.post("/chat", authMiddleware, createChat);
 userQueryRouter.post("/ask/:chatId", authMiddleware, userQueryHandler);
+
+userQueryRouter.get("/chat/:chatId", authMiddleware, getChatMessages);
