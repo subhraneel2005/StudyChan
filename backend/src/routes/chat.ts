@@ -188,9 +188,45 @@ const getChatMessages = async (req: any, res: any) => {
   }
 };
 
+const getAllChatsOfSpecificUser = async(req:any, res:any) => {
+  try {
+    const userId = req.userId;
+    const allChats = await prisma.chat.findMany({
+      where: {
+        userId: userId
+      },
+      include:{
+        document: {
+          select:{
+            fileName: true,
+            id:true,
+            userId: true
+          }
+        },
+        messages: true,
+        user: true
+      }
+    })
+
+    return res.status(200).json({
+      message: `All chats of user wuth userId = ${userId} fetched successfully`,
+      data: allChats
+    })
+  } catch (error) {
+    console.log("User all chats error"+error);
+    return res.status(500).json({
+      message: "Internam server error in User all chats",
+      error: error
+    })
+  }
+}
+
 userQueryRouter.delete("/chat/:chatId", authMiddleware, deleteChat);
 
 userQueryRouter.post("/chat", authMiddleware, createChat);
 userQueryRouter.post("/ask/:chatId", authMiddleware, userQueryHandler);
 
 userQueryRouter.get("/chat/:chatId", authMiddleware, getChatMessages);
+
+userQueryRouter.get("/allChats", authMiddleware, getAllChatsOfSpecificUser);
+

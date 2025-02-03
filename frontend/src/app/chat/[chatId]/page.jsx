@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Upload, Loader2, ExternalLink, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { FiPlus } from 'react-icons/fi';
+import ChatSidebar from '@/components/ChatSidebar';
 
 // Helper function to convert URLs to links
 const convertLinksToJSX = (text) => {
@@ -236,6 +237,8 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen w-full flex flex-col p-4 max-w-4xl mx-auto">
+      <ChatSidebar />
+      <div className="flex-1 ml-64 max-w-4xl mx-auto p-4">
       {!isPdfUploaded ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -348,6 +351,7 @@ export default function ChatPage() {
         >
           <Send className="w-5 h-5" />
         </motion.button>
+      </div>
       </div>
     </div>
   );
