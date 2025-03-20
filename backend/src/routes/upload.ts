@@ -11,7 +11,7 @@ export const uploadRouter = Router();
 
 const upload = multer({storage: multer.memoryStorage()});
 
-uploadRouter.post("/upload", authMiddleware,upload.single('file'), async(req:any,res) => {
+uploadRouter.post("/upload", authMiddleware, upload.single('file'), async(req:any,res) => {
 
     const userId = req.userId;
     try {

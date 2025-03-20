@@ -9,7 +9,7 @@ export async function semanticSearch(query: string, documentId: string) {
 
   // Pinecone search configuration
   const searchParams = {
-    topK: 5,
+    topK: 15,
     includeMetadata: true,
     vector: normalEmbeddings,
    filter:{

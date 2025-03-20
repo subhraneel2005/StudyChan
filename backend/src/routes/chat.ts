@@ -32,7 +32,6 @@ const createChat = async(req:any, res:any) =>{
 
 const userQueryHandler = async (req: any, res: any) => {
   try {
-    const userId = req.userId;
     const chatId = req.params.chatId;
 
     const chat = await prisma.chat.findUnique({
@@ -75,8 +74,18 @@ const userQueryHandler = async (req: any, res: any) => {
       },
   });
 
+    const previousMessages = await prisma.message.findMany({
+      where:{
+        chatId: chatId
+      },
+      orderBy:{
+        createdAt: "asc"
+      },
+      take: 2
+    })
+
     const relevantChunks = await semanticSearch(userQuery, fileName);
-    const aiResponse = await generateAIResponse(userQuery, relevantChunks!);
+    const aiResponse = await generateAIResponse(userQuery, relevantChunks!, previousMessages);
 
     await prisma.message.create({
       data: {
@@ -109,7 +118,7 @@ const deleteChat = async (req: any, res: any) => {
         id: chatId,
       },
       include: {
-        messages: true, // Include related messages to delete them first
+        messages: true
       },
     });
 
