@@ -50,7 +50,7 @@ const CustomSheet = () => {
                 className="w-full cursor-pointer text-left justify-start"
                 variant={"ghost"}
               >
-                Psycholoy {index+1}: Humans of 21st
+                Psycholoy {index + 1}: Humans of 21st
               </Button>
             ))}
           </div>
