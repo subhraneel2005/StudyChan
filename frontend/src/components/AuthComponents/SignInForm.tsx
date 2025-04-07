@@ -16,6 +16,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { signin } from "@/helpers/authHelpers/signin";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function SigninForm() {
   const searchParams = useSearchParams();
@@ -44,6 +45,8 @@ export default function SigninForm() {
       setUsername("");
       setPassword("");
       sessionStorage.setItem("token", response.token);
+      const setToken = useAuthStore.getState().setToken;
+      setToken(response.token);
       router.push(`/chat`);
     } catch (error) {
       console.log("Error in signin form:", error);

@@ -6,8 +6,6 @@ import { FiSend } from "react-icons/fi";
 import { GoPaperclip } from "react-icons/go";
 
 export default function AiInput() {
-  const token = sessionStorage.getItem("token");
-
   return (
     <div className="relative max-w-xl mt-6 w-full">
       <Textarea
