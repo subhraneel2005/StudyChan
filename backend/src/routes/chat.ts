@@ -7,28 +7,28 @@ import prisma from "../lib/prisma";
 
 export const userQueryRouter = Router();
 
-const createChat = async(req:any, res:any) =>{
+const createChat = async (req: any, res: any) => {
   try {
     const userId = req.userId;
     console.log(userId);
-    
+
     const newChat = await prisma.chat.create({
       data: {
-       userId: userId
-      }
+        userId: userId,
+      },
     });
 
     return res.status(200).json({
       message: "New chat created successfully",
-      chatId: newChat.id
-    })
+      chatId: newChat.id,
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Internal server error",
-      error: error
-    })
+      error: error,
+    });
   }
-}
+};
 
 const userQueryHandler = async (req: any, res: any) => {
   try {
@@ -36,12 +36,12 @@ const userQueryHandler = async (req: any, res: any) => {
 
     const chat = await prisma.chat.findUnique({
       where: {
-          id: chatId,
+        id: chatId,
       },
     });
 
     if (!chat) {
-        return res.status(404).json({ message: "Chat not found" });
+      return res.status(404).json({ message: "Chat not found" });
     }
     const { userQuery, fileName } = UserQuerySchema.parse(req.body);
 
@@ -49,62 +49,65 @@ const userQueryHandler = async (req: any, res: any) => {
       where: {
         fileName: fileName,
       },
-  });
-  
-  if (!document) {
+    });
+
+    if (!document) {
       return res.status(404).json({ message: "Document not found" });
-  }
+    }
 
     if (!chat.documentId) {
       await prisma.chat.update({
-          where: {
-              id: chatId,
-          },
-          data: {
-              documentId: fileName,
-            },
-        });
+        where: {
+          id: chatId,
+        },
+        data: {
+          documentId: fileName,
+        },
+      });
     }
 
     await prisma.message.create({
       data: {
-          chatId: chatId,
-          content: userQuery,
-          role: "user",
+        chatId: chatId,
+        content: userQuery,
+        role: "user",
       },
-  });
+    });
 
     const previousMessages = await prisma.message.findMany({
-      where:{
-        chatId: chatId
+      where: {
+        chatId: chatId,
       },
-      orderBy:{
-        createdAt: "asc"
+      orderBy: {
+        createdAt: "asc",
       },
-      take: 2
-    })
+      take: 2,
+    });
 
     const relevantChunks = await semanticSearch(userQuery, fileName);
-    const aiResponse = await generateAIResponse(userQuery, relevantChunks!, previousMessages);
+    const aiResponse = await generateAIResponse(
+      userQuery,
+      relevantChunks!,
+      previousMessages
+    );
 
     await prisma.message.create({
       data: {
-          chatId: chatId,
-          content: aiResponse.answer,
-          role: "assistant",
+        chatId: chatId,
+        content: aiResponse.answer,
+        role: "assistant",
       },
-  });
+    });
 
     return res.status(201).json({
       message: "User Query embedding is working successfully :)",
-      aiResponse
-      
+      aiResponse,
     });
   } catch (error) {
     return res.status(500).json({
-        message: "Internal server error",
-        error: error
-    })
+      message: "Internal server error",
+      error: error,
+    });
   }
 };
 
@@ -118,7 +121,7 @@ const deleteChat = async (req: any, res: any) => {
         id: chatId,
       },
       include: {
-        messages: true
+        messages: true,
       },
     });
 
@@ -161,10 +164,10 @@ const getChatMessages = async (req: any, res: any) => {
       include: {
         messages: {
           orderBy: {
-            createdAt: 'asc'
-          }
-        }
-      }
+            createdAt: "asc",
+          },
+        },
+      },
     });
 
     if (!chat) {
@@ -176,59 +179,59 @@ const getChatMessages = async (req: any, res: any) => {
     if (chat.documentId) {
       document = await prisma.document.findFirst({
         where: {
-          fileName: chat.documentId
+          fileName: chat.documentId,
         },
         select: {
           fileName: true,
-          originalName: true
-        }
+          originalName: true,
+        },
       });
     }
 
     return res.status(200).json({
       chat,
-      document
+      document,
     });
   } catch (error) {
     return res.status(500).json({
       message: "Internal server error",
-      error: error
+      error: error,
     });
   }
 };
 
-const getAllChatsOfSpecificUser = async(req:any, res:any) => {
+const getAllChatsOfSpecificUser = async (req: any, res: any) => {
   try {
     const userId = req.userId;
     const allChats = await prisma.chat.findMany({
       where: {
-        userId: userId
+        userId: userId,
       },
-      include:{
+      include: {
         document: {
-          select:{
+          select: {
             fileName: true,
-            id:true,
-            userId: true
-          }
+            id: true,
+            userId: true,
+          },
         },
         messages: true,
-        user: true
-      }
-    })
+        user: true,
+      },
+    });
 
     return res.status(200).json({
       message: `All chats of user wuth userId = ${userId} fetched successfully`,
-      data: allChats
-    })
+      data: allChats,
+    });
   } catch (error) {
-    console.log("User all chats error"+error);
+    console.log("User all chats error" + error);
     return res.status(500).json({
       message: "Internam server error in User all chats",
-      error: error
-    })
+      error: error,
+    });
   }
-}
+};
 
 userQueryRouter.delete("/chat/:chatId", authMiddleware, deleteChat);
 
@@ -238,4 +241,3 @@ userQueryRouter.post("/ask/:chatId", authMiddleware, userQueryHandler);
 userQueryRouter.get("/chat/:chatId", authMiddleware, getChatMessages);
 
 userQueryRouter.get("/allChats", authMiddleware, getAllChatsOfSpecificUser);
-
