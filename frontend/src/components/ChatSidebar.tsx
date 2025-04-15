@@ -125,13 +125,15 @@ const ChatSidebar = () => {
           <div className="text-center py-4">No chats found</div>
         ) : (
           chats?.map((chat) => (
-            <Button
-              key={chat.id}
-              className="w-full justify-start text-left h-auto py-3 overflow-hidden whitespace-normal"
-              variant="ghost"
-            >
-              {getChatTitle(chat)}
-            </Button>
+            <Link href={`/chat/${chat.id}`}>
+              <Button
+                key={chat.id}
+                className="w-full justify-start text-left h-auto py-3 overflow-hidden whitespace-normal"
+                variant="ghost"
+              >
+                {getChatTitle(chat)}
+              </Button>
+            </Link>
           ))
         )}
         <Link href={"/chat"}>
