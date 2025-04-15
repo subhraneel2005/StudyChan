@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Textarea } from "./textarea";
-import { FiSend } from "react-icons/fi";
-import { GoPaperclip } from "react-icons/go";
 import { useAuthStore } from "@/stores/authStore";
 import { toast } from "sonner";
 import { Button } from "./button";

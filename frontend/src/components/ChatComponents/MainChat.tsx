@@ -11,6 +11,8 @@ export default function MainChat() {
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
   useEffect(() => {
+    console.log("MAIN CHAT");
+
     if (typeof window !== "undefined") {
       initializeAuth();
     }
@@ -38,7 +40,7 @@ export default function MainChat() {
     );
   }
   return (
-    <div className="min-h-screen w-full justify-center items-center flex flex-col tracking-tighter px-3">
+    <div className="min-h-screen w-full justify-center items-center flex flex-col px-3">
       <h1 className="font-bold text-4xl md:text-5xl">
         Hi I'm <i className="font-black">StudyChan</i>
       </h1>
